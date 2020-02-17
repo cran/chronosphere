@@ -59,7 +59,6 @@ setMethod(
 #' @param x a \code{RasterArray} class object.
 #' @param vec Should the dimensions of the \code{RasterArray} be omitted?
 #' @return A \code{numeric} vector.
-#' @param ... arguments passed to the \code{\link[raster]{cellStats}} function.
 #' 
 #' @rdname extremeValues
 #' @examples 
@@ -156,19 +155,23 @@ setMethod(
 	}
 )
 
-#' Aggregate raster cells in a RasterArray object
+#' Aggregate raster cells in a \code{\link[chronosphere:RasterArray-class]{RasterArray}} object
 #' 
-#' The method is inherited from the \code{RasterStack} class.
+#' The method is inherited from the \code{\link[raster:raster]{RasterStack}} class.
 #' 
-#' @param x a \code{RasterArray} class object.
+#' @param x a \code{\link[chronosphere:RasterArray-class]{RasterArray}}-class object.
 #' @param ... arguments passed to the \code{\link[raster]{aggregate}} function.
 #' 
 #' @exportMethod aggregate
-#' @return An aggregated \code{RasterArray} class object.
+#' @return An aggregated \code{\link[chronosphere:RasterArray-class]{RasterArray}} class object.
 #' @examples
 #' data(dems)
 #' agg <- aggregate(dems, 5)
-#' 
+#' @rdname aggregate
+#' @name aggregate
+NULL
+
+#' @rdname aggregate
 setMethod(
 	"aggregate",
 	signature=c("RasterArray"),
@@ -190,7 +193,11 @@ setMethod(
 #' @examples
 #' data(dems)
 #' disagg <- disaggregate(dems, 3)
-#' 
+#' @rdname disaggregate
+#' @name disaggregate
+NULL
+
+#' @rdname disaggregate
 setMethod(
 	"disaggregate",
 	signature=c("RasterArray"),
@@ -262,9 +269,9 @@ setMethod(
 		# rename the column names
 		colnames(vals)<- colnames(x)
 
-	# base case
+	# base case - one vector of layers
 	}else{
-
+		
 		# column that contains which map the coordinate belongs to
 		if(is.character(by)){
 			if(!by%in%colnames(y)) stop("The argument by has to be a column of y. ")

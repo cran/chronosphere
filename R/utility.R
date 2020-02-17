@@ -1,6 +1,6 @@
 #' Redefine bounds of a named matrix
 #' 
-#' The function restructures a matrix and extends its current limits to a range defined by a names attribute
+#' The function restructures a \code{\link[base]{matrix}} and extends its current limits to a range defined by a names attribute
 #' 
 #' This is essentially a subsetting function that allows you to subset even when the rownames or colnames vector
 #' extends beyond the bounds of a matrix and traditional subsetting methods result in the notorious 'out of bounds' error.
@@ -169,6 +169,37 @@ shaper <- function(f="p",n=2, round=2,...){
 
 }
 
+#' Names as numerics
+#' 
+#' The set of functions return names of objects directly transformed to numeric values.
+#' 
+#' @param x Object with names, colnames or rownames attributes.
+#' @rdname nums
+#' @return Numeric vector.
+#' @examples
+#' data(dems)
+#' # ages as numerics
+#' nums(dems)
+#' # younger than 20Ma
+#' dems[nums(dems)<20]
+#' 
+#' 
+#' @export
+nums <- function(x){
+	as.numeric(names(x))
+}
+
+#' @rdname nums
+#' @export
+colnums<- function(x){
+	as.numeric(colnames(x))
+}
+
+#' @rdname nums
+#' @export
+rownums <- function(x){
+	as.numeric(rownames(x))
+}
 
 # Get operating system 
 # 
@@ -214,4 +245,6 @@ randomString <- function(n=1, length=12){
     }
     return(randomString)
 }
+
+
 

@@ -4,17 +4,17 @@
 #' 
 #' @return None.
 #' @param x Object to be plotted 
-#' @param col \code{character} Color or color scheme of the plot. See \code{?ramps} for available palettes.
-#' @param rgb set to \code{TRUE} to make a red-green-blue plot based on three layers or bands.
-#' @param legend (\code{logical}) Triggers whether the legend of a RasterLayer would be plotted.
-#' @param axes \code{logical} Should axes be displayed?
-#' @param box \code{logical} Should bounding boxes be displayed?
-#' @param ncol set number of columns in a multi-plot for a single variable. For a RasterArray with multiple variables, this number is automatically set to the number of variables. 
-#' @param legend.title title for the legend, if legend = TRUE. 
-#' @param plot.title The title for each individual plot. Only available for a single variable at the moment.
-#' @param rowlabels label for each row of the overall plot. Uses the rownames of the RasterArray by default. Only availble for multivariate RasterArrays. 
-#' @param multi Should the plots be printed on multiple pages? 
-#' @param ask NULL or a logical values. If multi.page = TRUE and ask = TRUE, then the user will be prompted before a new page of output is started
+#' @param col (\code{character}) Color or color scheme of the plot. See \code{\link{ramps}} for available palettes (\code{ipccLine} and \code{ipccRCP} are not available).
+#' @param rgb set to (\code{TRUE}) to make a red-green-blue plot based on three layers or bands.
+#' @param legend (\code{logical}) Triggers whether the legend of a \code{\link[raster:raster]{RasterLayer}} would be plotted.
+#' @param axes (\code{logical}) Should axes be displayed?
+#' @param box (\code{logical}) Should bounding boxes be displayed?
+#' @param ncol \code{numeric}) Set number of columns in a multi-plot for a single variable. For a \code{\link[chronosphere:RasterArray-class]{RasterArray}} with multiple variables, this number is automatically set to the number of variables. 
+#' @param legend.title (\code{character}) Title for the legend, if \code{legend = TRUE}. 
+#' @param plot.title (\code{character}) The title for each individual plot. Only available for a single variable at the moment.
+#' @param rowlabels (\code{character}) label for each row of the overall plot. Uses the rownames of the \code{\link[chronosphere:RasterArray-class]{RasterArray}} by default. Only availble for multivariate \code{\link[chronosphere:RasterArray-class]{RasterArray}}s. 
+#' @param multi (\code{logical}) Should the plots be printed on multiple pages? 
+#' @param ask (\code{logical} or \code{NULL}) If \code{multi.page = TRUE} and \code{ask = TRUE}, then the user will be prompted before a new page of output is started
 #' @param ... arguments passed to class-specific methods.
 #' @examples
 #' 
@@ -35,16 +35,16 @@ setGeneric("mapplot", function(x,...) standardGeneric("mapplot"))
 setMethod("mapplot", signature="RasterLayer", 
           definition = function(x, col="gradinv", axes=FALSE, box=FALSE, legend=FALSE, legend.title=NULL,...){
             
-            old.par <- par(no.readonly = TRUE)
-            on.exit(par(old.par), add = TRUE)
+            old.par <- graphics::par(no.readonly = TRUE) 
+            on.exit(graphics::par(old.par))
             
             if(length(col)==1){
-              if(col %in% c("ocean", "gradinv", "terra", "coldhot", "drywet", "wet")){
-                # store par and resent on exit
-                par(mar=c(3,1,1,0))
-
+              if(col %in% c("ocean", "gradinv", "terra", "ipccTemp", "ipccPrec", "wet")){
                 raster::plot(x,legend=FALSE, col=eval(parse(text = col))(255), axes=axes, box=box, ...)
                 
+                #save coordinates
+                old.par$usr <- par()$usr
+                  
                 if (legend == TRUE){
                   par(oma=c(1,0,0,0))
 
@@ -61,6 +61,8 @@ setMethod("mapplot", signature="RasterLayer",
                              breaks =c(negBreaks[1:(length(negBreaks)-1)], posBreaks), 
                              col=c(ocean(length(negBreaks)-1), 
                                    terra(length(posBreaks))), axes=axes, box=box,...)
+                #save coordinates
+                old.par$usr <- par()$usr
                 
                 if (legend == TRUE){
                   par(oma=c(1,0,0,0))
@@ -96,11 +98,12 @@ setMethod("mapplot", signature="RasterArray",
           definition = function(x, col="gradinv", rgb=FALSE, legend=FALSE, axes=FALSE, box=FALSE, 
                                 ncol = 3, legend.title=NULL, plot.title =NULL, rowlabels=rownames(x), multi=FALSE, ask=FALSE,...){
             
-           old.par <- par(no.readonly = TRUE)
-           on.exit(par(old.par), add=TRUE)
+            old.par <- graphics::par(no.readonly = TRUE) 
+            on.exit(graphics::par(old.par))
             
             if(rgb == TRUE){ #plot with rgb bands
-              raster::plotRGB(x@stack, ...)  	    
+              raster::plotRGB(x@stack, ...) 
+              old.par$usr <- par()$usr
             } else { #uni and multivariate rasterArrays
               
               #number of variables in array
@@ -114,7 +117,7 @@ setMethod("mapplot", signature="RasterArray",
               } else col <- as.list(rep(col,nvars))
               
               for (i in 1:nvars){
-                if(col[[i]][1] %in% c("ocean", "gradinv", "terra", "coldhot", "drywet", "wet")){
+                if(col[[i]][1] %in% c("ocean", "gradinv", "terra", "ipccTemp", "ipccPrec", "wet")){
                   col[[i]]=eval(parse(text = col[[i]]))(255)
                 }
                 
@@ -360,12 +363,12 @@ setMethod("mapplot", signature="SpatialPolygons",
 
 
 
-#' Shorthand for the plotting RasterArray objects
+#' Shorthand for the plotting \code{\link[chronosphere:RasterArray-class]{RasterArray}} objects
 #' 
-#' The plot(), method executes the \code{\link{mapplot}} function on the RasterArray object.
+#' This \code{plot}, method executes the \code{\link{mapplot}} function on the \code{\link[chronosphere:RasterArray-class]{RasterArray}} object.
 #' 
 #' @return None.
-#' @param x A RasterArray class object.
+#' @param x A (\code{\link[chronosphere:RasterArray-class]{RasterArray}}) Object to be plotted.
 #' @param y Not implemented yet.
 #' @param ... Arguments passed to the \code{\link{mapplot}} function.
 #' @examples

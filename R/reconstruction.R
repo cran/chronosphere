@@ -18,7 +18,7 @@
 #'	 \item "MATTHEWS2016" (Matthews et al., 2016) for coastlines and plate polygons. 
 #' }
 #' 
-#' If \code{model} is a \code{\link{platemodel}} class object, then the function will try to use the GPLates desktop application (\url{https://www.gplates.org/}) to reconstruct the coordinates (local reconstruction submodule).
+#' If \code{model} is a \code{\link{platemodel}} class object, then the function will try to use the GPLates desktop application (\url{http://www.gplates.org/}) to reconstruct the coordinates (local reconstruction submodule).
 #' Plate models are available in chronosphere with the \code{\link{fetch}} function. See \code{\link{dataindex}} for the available models.
 #' The function will try to find the main GPlates executable in its default installation directory. If this does not succeed, use \code{path.gplates} to enter the full path to the GPlates executable as a \code{character} string.
 #' 
@@ -80,8 +80,6 @@ setMethod(
 	function(x,age, model="PALEOMAP", listout=TRUE, verbose=FALSE, enumerate=TRUE, chunk=200, reverse=FALSE, path.gplates=NULL, cleanup=TRUE, dir=NULL){
 	 
 		# Check long lat!
-
-
 		if(!is.numeric(age)) age <- as.numeric(age)
 
 		# depending on length
@@ -142,7 +140,7 @@ setMethod(
 				for(i in 1:length(ageLevs)){
 					# which rows apply
 					index <- which(ageLevs[i]==age)
-					current <- x[index,]
+					current <- x[index, , drop=FALSE]
 					# do reconstruction and store
                     if(is.character(model)){
 					   container[index,] <- IteratedPointReconstruction(coords=current, chunk=chunk, age=ageLevs[i], model=model, reverse=reverse, verbose=verbose)
@@ -764,6 +762,7 @@ gplates_reconstruct_coastlines <- function(age, model="PALEOMAP", verbose=TRUE){
 #  gplates_reconstruct_static_polygons(140)
 #  
 gplates_reconstruct_static_polygons <- function(age, model="PALEOMAP", verbose=TRUE){
+	if(! requireNamespace("rgdal", quietly=TRUE)) stop("This method requires the 'rgdal' package to run.")
 	
 	#download and save data
 	url <- 'http://gws.gplates.org/reconstruct/static_polygons/'

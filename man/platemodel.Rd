@@ -7,17 +7,16 @@
 \alias{initialize,platemodel-method}
 \title{Class of objects representing plate tectonic models}
 \usage{
-\S4method{initialize}{platemodel}(.Object, path = NULL,
-  rotation = NULL, polygons = NULL)
+\S4method{initialize}{platemodel}(.Object, path = NULL, rotation = NULL, polygons = NULL)
 }
 \arguments{
-\item{.Object}{Virtual argument used for method dispatch.}
+\item{.Object}{Constructor argument (not needed).}
 
-\item{path}{Path to a .mod unique plate model object.}
+\item{path}{(\code{character}) Path to a .mod unique plate model object.}
 
-\item{rotation}{If \code{path} is \code{NULL}, the path to the rotation file-part of the model.}
+\item{rotation}{(\code{character}) If \code{path} is \code{NULL}, the path to the rotation file-part of the model.}
 
-\item{polygons}{If \code{path} is \code{NULL}, the path to the plate polygon file-part of the model.}
+\item{polygons}{(\code{character}) If \code{path} is \code{NULL}, the path to the plate polygon file-part of the model.}
 }
 \value{
 A \code{platemodel} class object.

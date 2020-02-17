@@ -174,7 +174,7 @@ data(dems)
 dems[5] <- NA
 is.na(dems)
 
-mapplot(dems, col="coldhot")
+mapplot(dems, col="ipccTemp")
 
 
 ## ----rarray_plot_ncol, echo=TRUE----------------------------------------------
@@ -194,6 +194,6 @@ mapplot(clim[1:2,], legend=TRUE)
 ## ----rarray_plot_rowlabs, echo=TRUE, fig.width=8, fig.height=4.5--------------
 data(clim)
 
-mapplot(clim[1:2,], col=c("coldhot", "wet"), 
+mapplot(clim[1:2,], col=c("ipccTemp", "ipccPrec"), 
         legend=TRUE, legend.title=c("Temperature", "Precipitation"))
 
