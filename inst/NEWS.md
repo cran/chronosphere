@@ -1,5 +1,63 @@
 # Change log of the R package 'chronosphere'
 
+
+## [0.3.0 (build 70)]
+### Added
+- datasets() function gained the 'dat', 'master'  and 'greetings' arguments. The default setting of the function only downloads the list of datasets (dat) and variables (var). Setting the 'dat' argument to a character entry will download the list of all archives from that dataset. Setting the master argument to 'master=TRUE' will download a list of all archives, which is expected to be very long in the near future. The argument 'greetings=TRUE' will display a reminder that additional versions and resolutions are available.
+- the downloaded objects now have chronosphere attributes. These record the accession information used previously, which allows the repetition of function call, if necessary - including changes.
+- fetch() can return the function call, using call=TRUE. This can be either an expression or a terminal message, depending on the settings of call.expr=TRUE/FALSE.
+- fetch() can be used with an already downloaded the chronosphere-object to either redownload it, or get its download function call.
+- fetch() can be used to return multiple variables from the same dataset. These will be concatenated into a list, unless they are RasterArrays, in which case fetch() will try to cbind() them
+- the extent() method of the RasterArray class
+- the server log log.csv is only checked once per session.
+
+### Removed
+- The dataindex() deprecated placeholder function was removed. Use datasets() instead.
+- previous updates to reconstruct()
+
+
+## [0.2.2 (build 69)] - 2020-03-11
+### Changed
+- reconstruct - defense against bad ages
+- rotationModels() and validCoords() added
+
+
+## [0.2.2 (build 68)] - 2020-03-11
+### Changed
+- reconstruct - defense against bad long/lat
+
+
+## [0.2.2 (build 67)] - 2020-03-06
+### Changed
+- bug fixes
+
+
+## [0.2.2 (build 66)] - 2020-03-05
+### Added
+- new method extract('RasterArray', 'matrix')
+- by=NULL is added as to extract('RasterArray', 'data.frame') 
+
+### Changed
+- bug fix of newbounds() when col was given.
+- by=NULL is the new default of extract('RasterArray', 'data.frame'). The function was redesigned to accomodate n-dimensional RasterArray input.
+- bug fix of dimnames('RasterArray')
+
+
+## [0.2.2 (build 65)] - 2020-02-20 
+## Added
+- plateperiod argument of the reconstruct() function
+
+
+## [0.2.2 (build 64)] - 2020-02-20 
+## Changed
+- mapplot overlap offset fixed
+
+
+## [0.2.2 (build 63)] - 2020-02-18 
+## Added
+- rotate-method for the RasterArray class
+
+
 ## [0.2.2 (build 62)] - 2020-02-17 
 ## Added
 - zzz.R with chronosphere package help file
@@ -7,14 +65,17 @@
 ### Changed
 - the dataindex() function was renamed to datasets()
 
+
 ## [0.2.1 (build 61)] - 2020-02-14 
 ### Changed
 - mapplot() coordinate reset fixed
 - IPCC palettes added
 
+
 ## [0.2.1 (build 60)] - 2020-02-12 
 ### Changed
 - corrected documentation problems
+
 
 ## [0.2.1 (build 59)] - 2020-01-27 
 ### Added
@@ -23,6 +84,7 @@
 ### Changed
 - fetch() defaults to the coarsest resolution (highest res entry, new default is res=NULL)
 
+
 ## [0.2.1 (build 58)] - 2020-01-12 
 ### Added
 - the nums(), colnums() and rownums() functions
@@ -30,6 +92,7 @@
 
 ### Changed 
 - Fixed issue with offline reconstruction method (one entry in an age with enumerate = FALSE)
+
 
 ## [0.2.0 (build 57)] - 2019-12-11 (CRAN initial submission, take 3)
 ### Changed 
@@ -40,6 +103,7 @@
 - t() copies colnames and rownames attributes
 - Raster variable loading is now done with R code provided by the server
 - renamed NEWS file to NEWS.md
+
 
 ## [0.2.0 (build 56)] - 2019-12-03 (CRAN initial submission, take 2)
 ### Added 

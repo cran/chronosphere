@@ -112,7 +112,7 @@ demna <- dems
 demna[3] <- NA
 
 ## ----cellsbu, echo= TRUE, plot=TRUE, fig.height=5.5---------------------------
-# character is necessary, as the row named "2003" is necessary
+# character type is necessary as the rowname is "2003"
 one <- clim["2003", "bio1"]
 mapplot(one)
 
@@ -131,7 +131,7 @@ ext <- extent(c(
   ymax = 1.14 
 )) 
 
-# cropping all DEMS (Australia drifted in)
+# cropping all DEMS 
 au<- crop(dems, ext)
 
 # select the first element
@@ -143,7 +143,7 @@ template <- raster(res=5)
 # resample all DEMS
 coarse <- resample(dems, template)
 
-# plot an elemnt
+# plot an element
 mapplot(coarse["45"], col="earth")
 
 ## ----palette, fig.height=3, fig.width=8---------------------------------------
@@ -153,7 +153,7 @@ showPal()
 data(dems)
 mapplot(dems[1])
 
-#using an custom colour palette
+#using a custom colour palette
 mapplot(dems[1], col="earth", main="Using the earth palette")
 
 

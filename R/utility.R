@@ -22,14 +22,24 @@ newbounds <- function(x, cols=NULL, rows=NULL){
 		newX <- matrix(NA, ncol=ncol(x), nrow=length(rows))
 		colnames(newX) <- colnames(x)
 		rownames(newX) <- rows
-		newX[rows%in%rownames(x), ] <- x[rownames(x)%in%rows, ]
+		# reorder items to match the new order
+		ordering <- rows[rows%in%rownames(x)]
+		x2 <- x[ordering, , drop=FALSE]
+
+		# insert into new bounds
+		newX[rows%in%rownames(x2), ] <- x2[rownames(x2)%in%rows, , drop=FALSE]
 	}
 	if(!is.null(cols)){
 		if(is.null(colnames(x))) stop("The matrix must have colnames.")
 		newX <- matrix(NA, nrow=nrow(x), ncol=length(cols))
 		rownames(newX) <- rownames(x)
 		colnames(newX) <- cols
-		newX[cols%in%colnames(x)] <- x[, colnames(x)%in%cols]
+		# reorder items to match the new order
+		ordering <- cols[cols%in%colnames(x)]
+		x2 <- x[,ordering , drop=FALSE]
+
+		# insert into new bounds
+		newX[,cols%in%colnames(x)] <- x[, colnames(x)%in%cols, drop=FALSE]
 	}
 	return(newX)
 }
@@ -41,7 +51,7 @@ newbounds <- function(x, cols=NULL, rows=NULL){
 #' The function returns snippets of code that you can paste in your script after you select points on a plot. Useful for defining areas on a map. The default methods assume that you will first click in the bottom left and then in the bottom right corner.
 #' 
 #' @param round (\code{integer}) Number of digits to round to, can be two values, first is for \code{x} second for \code{y}. 
-#' @param f (\code{character}) A single letter value specifying for which function's arugment format you want to get parameters. \code{"p"} is for \code{\link[graphics]{plot}}, \code{"r"} is for \code{\link[graphics]{rect}}, \code{"s"} is for \code{\link[graphics]{segments}}. \code{"e"} returns a call to create an \code{\link[raster]{extent}} class object from the package \code{raster}. \code{"m"} will return code to define a 2 column matrix.
+#' @param f (\code{character}) A single letter value specifying for which function's arugment format you want to get parameters. \code{"p"} is for \code{\link[base]{plot}}, \code{"r"} is for \code{\link[graphics]{rect}}, \code{"s"} is for \code{\link[graphics]{segments}}. \code{"e"} returns a call to create an \code{\link[raster]{extent}} class object from the package \code{raster}. \code{"m"} will return code to define a 2 column matrix.
 #' @param n (\code{integer}) The number of points to request. 
 #' @param ... arguments passed to the \code{\link[graphics]{locator}} function
 #' @return For certain methods (\code{"m"} and \code{"e"}) the function returns a \code{matrix} or \code{extent} class object if the function output is assigned to a name.
@@ -248,3 +258,17 @@ randomString <- function(n=1, length=12){
 
 
 
+
+# one dimensional subscript of n dimensional array on a given margin
+marginsubset <- function(x, mar, i){
+	# number of dimensions necessary
+	dims <- length(dim(x))
+
+	# construct subsetting call
+	callThis <- paste("x[", paste(rep(",",mar-1), collapse=""),"i", paste(rep(",", dims-mar), collapse=""), "]", collapse="")
+
+	# as an expression
+	express <- parse(text=callThis)
+
+	eval(express)
+}

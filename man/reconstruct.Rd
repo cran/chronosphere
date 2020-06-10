@@ -100,7 +100,7 @@ The available reconstruction models for this submodule are:
 }
 
 If \code{model} is a \code{\link{platemodel}} class object, then the function will try to use the GPLates desktop application (\url{http://www.gplates.org/}) to reconstruct the coordinates (local reconstruction submodule).
-Plate models are available in chronosphere with the \code{\link{fetch}} function. See \code{\link{dataindex}} for the available models.
+Plate models are available in chronosphere with the \code{\link{fetch}} function. See \code{\link{datasets}} for the available models.
 The function will try to find the main GPlates executable in its default installation directory. If this does not succeed, use \code{path.gplates} to enter the full path to the GPlates executable as a \code{character} string.
 }
 \section{References}{
@@ -129,9 +129,5 @@ reconstruct(xy, 140)
 # coastlines/plates
 coast <- reconstruct("coastlines", 140)
 plate <- reconstruct("plates", 139)
-
-# With GPlates
- pm <- fetch("paleomap", "model")
- reconstruct(matrix(c(95, 54), nrow=1), 140, model=pm)
  }
 }

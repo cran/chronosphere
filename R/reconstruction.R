@@ -19,7 +19,7 @@
 #' }
 #' 
 #' If \code{model} is a \code{\link{platemodel}} class object, then the function will try to use the GPLates desktop application (\url{http://www.gplates.org/}) to reconstruct the coordinates (local reconstruction submodule).
-#' Plate models are available in chronosphere with the \code{\link{fetch}} function. See \code{\link{dataindex}} for the available models.
+#' Plate models are available in chronosphere with the \code{\link{fetch}} function. See \code{\link{datasets}} for the available models.
 #' The function will try to find the main GPlates executable in its default installation directory. If this does not succeed, use \code{path.gplates} to enter the full path to the GPlates executable as a \code{character} string.
 #' 
 #' 
@@ -62,9 +62,6 @@
 #'	coast <- reconstruct("coastlines", 140)
 #'	plate <- reconstruct("plates", 139)
 #'	
-#' # With GPlates
-#'  pm <- fetch("paleomap", "model")
-#'  reconstruct(matrix(c(95, 54), nrow=1), 140, model=pm)
 #'  }
 #' @rdname reconstruct
 #' @exportMethod reconstruct
@@ -410,14 +407,14 @@ reconstructGPlates <- function(x, age, model, path.gplates=NULL,dir=NULL, verbos
 
 		# prepare x
 		# create a SpatialPointsDataFrame from long-lat matrix
-		if(class(x)=="matrix" | class(x)=="data.frame"){
+		if("matrix"%in%class(x) | "data.frame"%in%class(x)){
 			spPoints<- sp::SpatialPoints(x)
 			spPoints@proj4string <- sp::CRS("+proj=longlat")
 			xTransform <- sp::SpatialPointsDataFrame(spPoints, data=data.frame(a=1:nrow(x)))		
 		}
 		
 		# if originally a SpatialPointsDataFrame
-		if(class(x)=="SpatialPointsDataFrame"){
+		if("SpatialPointsDataFrame"%in%class(x)){
 			if(!is.na(x@proj4string)){
 				xTransform <- sp::spTransform(x, sp::CRS("+proj=longlat"))
 			}else{
@@ -427,7 +424,7 @@ reconstructGPlates <- function(x, age, model, path.gplates=NULL,dir=NULL, verbos
 		}
 
 		# if originally a SpatialPointsDataFrame
-		if(class(x)=="SpatialPolygonsDataFrame"){
+		if("SpatialPolygonsDataFrame"%in%class(x)){
 			xTransform <- x
 		}
 
@@ -480,7 +477,7 @@ reconstructGPlates <- function(x, age, model, path.gplates=NULL,dir=NULL, verbos
 		}
 		
 		# transform object back to whatever it was
-		if(class(x)=="matrix" | class(x)=="data.frame"){
+		if("matrix"%in%class(x) | "data.frame"%in%class(x)){
 			# some coordinates probably were missing
 			rotated <- x
 			rotated <- matrix(NA, ncol=2, nrow=nrow(x))
@@ -491,16 +488,16 @@ reconstructGPlates <- function(x, age, model, path.gplates=NULL,dir=NULL, verbos
 		}
 
 		if(
-			class(x)=="SpatialPolygonsDataFrame" | 
-			class(x)=="SpatialPointsDataFrame" |
-			class(x)=="character"){
+			"SpatialPolygonsDataFrame"%in%class(x) | 
+			"SpatialPointsDataFrame"%in%class(x) |
+			"character"%in%class(x)){
 				rotated <- somethingDF
 		}
 
 
 	# 5. Finish
 		# remove temporary files
-		if(class(x)!="character"){
+		if(!"character"%in%class(x)){
 			if(cleanup){		
 				system(paste("rm ",tempd, "/",layer,"*", sep=""))
 			}
