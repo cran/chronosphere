@@ -57,7 +57,7 @@ datasets <- function(dat=NULL, datadir=NULL, verbose=FALSE, master=FALSE, greeti
 		# do any of them match? 
 		if(any(datfile==all)){
 			# read it in
-			ret <- read.csv(file.path(datadir, datfile), sep=",", header=TRUE, stringsAsFactors=FALSE)
+			ret <- read.csv(file.path(datadir, datfile), sep=";", header=TRUE, stringsAsFactors=FALSE)
 
 			# structure is ok
 			if(sum(c("dat", "var", "ver", "res")%in%colnames(ret))==4){
@@ -352,7 +352,7 @@ FetchVars <- function(dat, var=NULL, ver=NULL, res=NULL, datadir=NULL, verbose=T
 		
 		# again, limit registry - now to desired verson
 		register <- register[register[, "ver"]==ver, , drop=FALSE]
-		if(nrow(register)==0) stop(paste0("Version \'", ver, "\' of variable \'", var, "\' is not available at resolution ", ver, "."))
+		if(nrow(register)==0) stop(paste0("Version \'", ver, "\' of variable \'", var, "\' is not available at resolution ", res, "."))
 
 		# after all this is done, there should be just one row in the table...
 		if(nrow(register)!=1) stop("This should not have happened.")
@@ -406,11 +406,8 @@ FetchVars <- function(dat, var=NULL, ver=NULL, res=NULL, datadir=NULL, verbose=T
 
 	# display citations
 	if(citation & verbose){
-		message("If you use the data in publications, please cite its\nreference, as well as that of the 'chronosphere' package.")
-		for(i in 1:length(attributes(downloaded)$chronosphere$reference)){
-			cat("\n")
-			message(paste("-", attributes(downloaded)$chronosphere$reference[i]))
-		}
+		message("If you use the data in publications, please cite its\nreference(s), as well as that of the 'chronosphere' package.\n")
+		reference(downloaded, print=TRUE)
 	}
 	
 	return(downloaded)
