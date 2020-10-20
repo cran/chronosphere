@@ -7,19 +7,12 @@ library(chronosphere)
 
 ## ----dat, echo= TRUE----------------------------------------------------------
 data(dems)
-data(clim)
 
 ## ----dems, echo= TRUE---------------------------------------------------------
 dems
 
 ## ----dems2, echo= TRUE--------------------------------------------------------
 proxy(dems)
-
-## ----clim, echo= TRUE---------------------------------------------------------
-clim
-
-## ----climprox, echo= TRUE-----------------------------------------------------
-proxy(clim)
 
 ## ----constructor, echo= TRUE--------------------------------------------------
 # a stack of rasters
@@ -45,36 +38,66 @@ comb
 # bind dems to itself
 cbind(dems, dems)
 
+## ----coasts, echo= TRUE-------------------------------------------------------
+data(coasts)
+coasts
+
+## ----coastprox, echo= TRUE----------------------------------------------------
+proxy(coasts)
+
+## ----combSp, echo= TRUE-------------------------------------------------------
+# Individual SP objects
+margin0 <- coasts[1, 1]
+margin5 <- coasts[2, 1]
+combination<- combine(margin0, margin5)
+combination
+
+## ----combre, echo= TRUE-------------------------------------------------------
+coast0 <- coasts[1, 2]
+coast5 <- coasts[1, 2]
+# create SpatialStack
+spStack<- stack(margin0, margin5, coast0, coast5)
+# alternatively: accepts filenames too
+# spStack <- SpatialStack(list(margin0, margin5, coast0, coast5))
+
+## ----indcomb, echo= TRUE------------------------------------------------------
+ind <- matrix(1:4, ncol=2)
+colnames(ind) <- c("margin", "coast")
+rownames(ind) <- c("0", "5")
+spArray <- SpatialArray(index=ind, stack=spStack)
+spArray
+
+
 ## ----le, echo= TRUE-----------------------------------------------------------
 length(dems)
 
 ## ----cle, echo= TRUE----------------------------------------------------------
-nrow(clim)
-ncol(clim)
+nrow(coasts)
+ncol(coasts)
 
 ## ----dime, echo= TRUE---------------------------------------------------------
 dim(dems)
 
-dim(clim)
+dim(coasts)
 
 ## ----demname, echo= TRUE------------------------------------------------------
 names(dems)
 
-## ----climane, echo= TRUE------------------------------------------------------
-colnames(clim)
-rownames(clim)
+## ----coastname, echo= TRUE----------------------------------------------------
+colnames(coasts)
+rownames(coasts)
 
-## ----climrename, echo= TRUE---------------------------------------------------
-clim2 <- clim
-colnames(clim2) <- c("temp", "prec")
-clim2
+## ----coastrename, echo= TRUE--------------------------------------------------
+coasts2 <- coasts
+colnames(coasts2) <- c("m", "c")
+coasts2
 
-## ----climrenamedim, echo= TRUE------------------------------------------------
-dimnames(clim2)[[1]] <- 1:10
-clim2
+## ----caostrenamedim, echo= TRUE-----------------------------------------------
+dimnames(coasts2)[[1]] <- paste(rownames(coasts), "Ma")
+coasts2
 
 ## ----layernames, echo= TRUE---------------------------------------------------
-layers(clim)
+layers(dems)
 
 ## ----cells, echo= TRUE--------------------------------------------------------
 ncell(dems)
@@ -113,14 +136,14 @@ demna[3] <- NA
 
 ## ----cellsbu, echo= TRUE, plot=TRUE, fig.height=5.5---------------------------
 # character type is necessary as the rowname is "2003"
-one <- clim["2003", "bio1"]
+one <- coasts["15", "coast"]
 mapplot(one)
 
 ## ----entirerow, echo= TRUE----------------------------------------------------
-clim["2005", ]
+coasts["15", ]
 
 ## ----entirecol, echo= TRUE----------------------------------------------------
-clim[,"bio12"]
+coasts[,"coast"]
 
 ## ----crop, echo= TRUE, plot=TRUE, fig.height=5.5------------------------------
 # crop to Australia
@@ -145,6 +168,19 @@ coarse <- resample(dems, template)
 
 # plot an element
 mapplot(coarse["45"], col="earth")
+
+## ----sptran, echo= TRUE, plot=TRUE, fig.height=5.5----------------------------
+# Cylindrial equal area projection
+mollCoasts <- spTransform(coasts, CRS("+proj=moll"))
+
+# plot edge of the map
+edge<- spTransform(mapedge(), CRS("+proj=moll"))
+plot(edge, col=ocean(8)[5])
+
+# the entire thing
+plot(mollCoasts["20", "margin"], col=ocean(8)[7], border=NA, add=T)
+plot(mollCoasts["20", "coast"], col=terra(8)[5], add=T, border=NA)
+
 
 ## ----palette, fig.height=3, fig.width=8---------------------------------------
 showPal()
@@ -185,15 +221,4 @@ mapplot(dems, ncol=4)
 ## ----rarray_plot_multi, echo = TRUE, eval=FALSE-------------------------------
 #  data(dems)
 #  mapplot(dems, multi=TRUE)
-
-## ----rarray_plot_nvar, echo=TRUE, fig.width=8, fig.height=4.5-----------------
-data(clim)
-
-mapplot(clim[1:2,], legend=TRUE)
-
-## ----rarray_plot_rowlabs, echo=TRUE, fig.width=8, fig.height=4.5--------------
-data(clim)
-
-mapplot(clim[1:2,], col=c("ipccTemp", "ipccPrec"), 
-        legend=TRUE, legend.title=c("Temperature", "Precipitation"))
 

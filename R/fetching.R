@@ -8,9 +8,9 @@ checklog <- TRUE
 #' 
 #' The function will download a list of available data from the data repository
 #' 
-#' The function will download a single .csv file and attached it as a \code{data.frame}.
+#' The function will download a single .csv file and attach it as a \code{data.frame}.
 #' 
-#' @param dat \code{character}. Dataset ID. If this is set to \code{NULL}, then a simplified list of availables variables will be downloaded, including all \code{dat} and \code{var} combinations. If \code{dat} is a valid dataset ID, then all accessible variables of a dataset are downloaded. 
+#' @param dat \code{character}. Database ID. If this is set to \code{NULL}, then a simplified list of availables variables will be downloaded, including all \code{dat} and \code{var} combinations. If \code{dat} is a valid database ID, then all accessible resolutions and version of a dataset are shown. 
 #' @param datadir \code{character} Directory where the downloaded files are kept. Individual entries will be looked up from the directory if this is given, and will be downloaded if they are not found. The default \code{NULL} option will download data to a temporary directory that exists only until the R session ends.
 #' @param verbose \code{logical} Should console feedback during download be displayed?
 #' @param master \code{logical} When \code{dat} is \code{NULL}, should the function download the master records file?
@@ -20,7 +20,7 @@ checklog <- TRUE
 #' \donttest{
 #' # available datasets and variables
 #' ind <- datasets()
-#' # all available versions and resolutions in dataset 'paleomap'
+#' # all available versions and resolutions in database 'paleomap'
 #' oneDat <- datasets("paleomap")
 #' }
 #' @export
@@ -57,7 +57,7 @@ datasets <- function(dat=NULL, datadir=NULL, verbose=FALSE, master=FALSE, greeti
 		# do any of them match? 
 		if(any(datfile==all)){
 			# read it in
-			ret <- read.csv(file.path(datadir, datfile), sep=";", header=TRUE, stringsAsFactors=FALSE)
+			ret <- read.csv(file.path(datadir, datfile), sep=";", header=TRUE, stringsAsFactors=FALSE, encoding="UTF-8")
 
 			# structure is ok
 			if(sum(c("dat", "var", "ver", "res")%in%colnames(ret))==4){
@@ -93,7 +93,7 @@ datasets <- function(dat=NULL, datadir=NULL, verbose=FALSE, master=FALSE, greeti
 		# check the server log.
 		if(checklog){
 			# read server log
-			log <- read.csv(tempLog, sep=",", header=TRUE, stringsAsFactors=FALSE)
+			log <- tryCatch(read.csv(tempLog, sep=",", header=TRUE, stringsAsFactors=FALSE, encoding="UTF-8"), error=function() stop("Invalid log file, remote server cannot be reached."))
 
 			# display message intended for people using this particular version
 			pkgver <- sessionInfo()$otherPkgs$chronosphere$Version
@@ -115,7 +115,7 @@ datasets <- function(dat=NULL, datadir=NULL, verbose=FALSE, master=FALSE, greeti
 		}
 		
 		# and set return value
-		ret <- read.csv(tempReg, sep=";", header=TRUE, stringsAsFactors=FALSE)
+		ret <- read.csv(tempReg, sep=";", header=TRUE, stringsAsFactors=FALSE, encoding="UTF-8")
 
 		# get rid of the  temporary file
 		if(is.null(datadir)) unlink(tempReg)
@@ -506,6 +506,9 @@ ChronoAttributes <- function(dat=NULL, var=NULL, res=NULL, ver=NULL, reg=NULL,..
 	# original version
 	baseList$info <- reg$info
 
+	# API call
+	baseList$API <- reg$API
+
 	baseList$additional <- list(...)
 
 
@@ -597,6 +600,7 @@ CombineVars <- function(theList){
 		attributes(combined)$chronosphere$accessDate <- c(attributes(combined)$chronosphere$accessDate, attributes(theList[[j]])$chronosphere$accessDate)
 		attributes(combined)$chronosphere$additional <- c(attributes(combined)$chronosphere$additional, attributes(theList[[j]])$chronosphere$additional)
 		attributes(combined)$chronosphere$info <- c(attributes(combined)$chronosphere$info, attributes(theList[[j]])$chronosphere$info)
+		attributes(combined)$chronosphere$API <- c(attributes(combined)$chronosphere$API, attributes(theList[[j]])$chronosphere$API)
 	}
 
 	return(combined)

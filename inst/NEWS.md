@@ -1,5 +1,58 @@
 # Change log of the R package 'chronosphere'
 
+## [0.4.0] - 2020-10-18 (build 79 - CRAN submission take 2)
+### Added 
+- vignette url fix
+
+
+## [0.4.0] - 2020-10-18 (build 78 - Initial CRAN submission)
+### Added 
+- minor fixes
+
+
+## [0.4.0 (build 77)] - 2020-10-13
+### Added
+- package collate in DESCRIPTION
+- The SpatialArray class is added to the package, mimicking RasterArrays for vector objects. 
+- The SpatialList class is added, to be used in the SpatialStack. 
+- The XArray class-union is made for the efficient generalization of methods shared by RasterArray and SpatialArray. Shared methods are impplemented.
+- the spTransform() function is implemented for SpatialStacks and SpatialArrays.
+- the apply() function gained the MARGIN=NULL submethod. THis submethod is useful for the iteration of functions for every XArray item.
+- The mapedge() function for the quick calculation of map edges in non-equirectangular projections.
+- the 'coasts' data demo object of the PaleoMAP Paleocoastlines
+- types() generic and SpatialArray-method is added.
+
+
+### Changed
+- Multiple RasterArray methods are now generalized for the XArray and are no longer specific to RasterArrays.
+- vignette was renamed from chronos.Rmd to chronosphere.Rmd, references to 'clim' were removed and uses 'coasts' now instead
+
+### Removed
+- the reporting tools added in build 75 are removed as they require further testing
+- the 'clim' demo object was removed to decrease the size of the package
+
+### Known issues/missing features
+- SpatialArrays and SpatialStacks do not have a default plotting method yet.
+- The apply() function has limit utility on SpatialArrays.
+- rare issues with res/ver defaulting, use explicit ver and res to ensure correct download
+
+## [0.3.1 (build 76)] - 2020-09-23
+### Added
+- Forced UTF-8 encoding for the registry tables
+- added API call to chronosphere object attributes.
+
+## [0.3.1 (build 75)] - 2020-09-20
+### Added
+- create_metadata() and report() to create data report based on the pbdb download
+- generate_bib() and related functions to generate bibliography for report
+- capitalize() to capitalise strings - for formatting purposes
+- pkg_file() to access files within the package
+- template files to inst/rmarkdown/
+
+## [0.3.1 (build 74)] - 2020-08-20
+### Added
+- The SpatialLinesDataFrame-method of the reconstruct() function.
+
 
 ## [0.3.1 (build 73)] - 2020-08-07
 ### Added
