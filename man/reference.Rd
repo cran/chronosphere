@@ -4,10 +4,19 @@
 \alias{reference}
 \title{Retrieve citation of data object}
 \usage{
-reference(dat, var = NULL, ver = NULL, print = TRUE, prefix = "")
+reference(
+  dat,
+  bibtex = FALSE,
+  var = NULL,
+  ver = NULL,
+  print = TRUE,
+  prefix = ""
+)
 }
 \arguments{
 \item{dat}{(\code{characater}) Object downloaded with \code{\link{fetch}} or the database identifier string.}
+
+\item{bibtex}{(\code{logical}) Should a bibtex be printed/returned?}
 
 \item{var}{(\code{character}) In case \code{dat} is \code{character}, the variable identifier.}
 
@@ -17,9 +26,19 @@ reference(dat, var = NULL, ver = NULL, print = TRUE, prefix = "")
 
 \item{prefix}{(\code{characater}) In case the output is printed on the console. Use this to include a prefix before every entry.}
 }
+\value{
+By default the function has no return value. If \code{print=FALSE}, the function will return a reference character string.
+}
 \description{
 The function prints or returns the citation string of a chosen object/item.
 }
 \details{
 The function is intended to be updated to handle BibTEX entries.
+}
+\examples{
+# A locally-present object, in package's directory
+one <- fetch(dat="SOM-zaffos-fragmentation",
+  datadir=system.file("extdata", package="chronosphere"))
+# its reference
+reference(one)
 }
