@@ -1,7 +1,7 @@
 Package: chronosphere
 Type: Package
 Title: Evolving Earth System Variables
-Version: 0.5.0
+Version: 0.6.0
 Authors@R: c(
 	person(given="Adam T.", family="Kocsis", role=c("cre", "aut"),
 		   email="adam.t.kocsis@gmail.com", comment=c(ORCID="0000-0002-9028-665X")),
@@ -13,18 +13,18 @@ Description: The implemented functions allow the query, download, and import of 
 License: CC BY 4.0
 Collate: global.R attributes.R call.R datasets.R fetching.R info.R
         utility.R zzz.R
-Date: 2023-06-13
-BugReports: https://github.com/chronosphere-portal/r_package/issues
+Date: 2023-08-14
+BugReports: https://github.com/chronosphere-info/r_client/issues
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
 Imports: utils, tools
 NeedsCompilation: no
 RoxygenNote: 7.2.3
 Suggests: curl, tinytest
-Packaged: 2023-06-13 10:56:25 UTC; root
+Packaged: 2023-08-14 09:43:35 UTC; root
 Author: Adam T. Kocsis [cre, aut] (<https://orcid.org/0000-0002-9028-665X>),
   Nussaibah B. Raja [aut] (<https://orcid.org/0000-0002-0000-3944>),
   Deutsche Forschungsgemeinschaft [fnd],
   FAU GeoZentrum Nordbayern [fnd]
 Repository: CRAN
-Date/Publication: 2023-06-13 14:40:02 UTC
+Date/Publication: 2023-08-14 10:00:02 UTC
