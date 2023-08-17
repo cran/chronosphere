@@ -1,6 +1,6 @@
-6da4eb92f12b43581ca64de734bef17a *DESCRIPTION
+820c879bdd2c22f941e93935c7e713b3 *DESCRIPTION
 447a01cbcc549df5e1a7a569cff49bb8 *NAMESPACE
-c19455b714b20656bb930fd70629a2d7 *NEWS.md
+368429fd6550951268368affd16c93e0 *NEWS.md
 237c653f1d6692d4b6b324fcab303381 *R/attributes.R
 c3b840bf74c7354d1b82c653b6f945b2 *R/call.R
 3a9c79def3c3477508cb38a628730971 *R/datasets.R
@@ -10,10 +10,10 @@ be3b873af7e46e480554c4986bed5250 *R/global.R
 321309cd8494f8e9d4a8454b176d43cc *R/utility.R
 41b5f916d538d0021c53359abe062877 *R/zzz.R
 f88369c4f19371456f2cd997ee9b7297 *inst/CITATION
-78812f1070bd710e22c55f338959cce2 *inst/extdata/R/SOM-zaffos-fragmentation.csv
+2b6a0bb417d20cc5e62b8cfdd6572663 *inst/extdata/R/SOM-zaffos-fragmentation.csv
 8a3f9aa1eb719cfcc9381f271cab7818 *inst/extdata/R/SOM-zaffos-fragmentation_fragment_20170424_23/18_zaffos.R
 11a28235b7ca3f80e54fe9d8e780d454 *inst/extdata/R/SOM-zaffos-fragmentation_fragment_20170424_23/ContinuousTimeSeries.csv
-1febc26634b390b0b48db6c387802816 *inst/extdata/R/subguide.csv
+f9a6789dd28ddb28a1ac33f8b6044c43 *inst/extdata/R/subguide.csv
 615a3ff2baef92618d0c8f0be9988654 *inst/tinytest/test_configure.R
 f082a2725ee80e7cb61d06ce5a2c6327 *man/chronosphere.Rd
 f790dfe7b4847774a293a501d89be43b *man/configure.Rd
